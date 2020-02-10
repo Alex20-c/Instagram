@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+    <nav class="navbar-fixed-top" style="background-color: white;">
+        <div class="container-fluid" >
+            <div class="navbar-header">
+                <a href="/"><img src="../static/images/ig.jpg" width="60px;" height="60px"></a>
+                            <a href="{% url 'profileView' %}" id="instTitle" style="color: black">
+                                {{request.user.username}}
+            </div>
+                <div class="navbar-right">
+                
+                
+                
+                    {% if user.is_authenticated %}
+                    <ul style="list-style:none; position: relative; margin-top:10px;float:right; color:rgb(19, 175, 167); margin-right: 6%;">
+                        <li class="dropdown" style="color:rgb(17, 123, 175);">
+                            <a href="#" class="dropdown-toggle btn btn-default" data-toggle="dropdown" role="button" aria-expanded="false">More
+                                <span class="caret"></span>
+                            </a>
+                
+                            <ul class="dropdown-menu" role="menu">
+                                <li>
+                                    <a href="/accounts/password/change">Change Password</a>
+                                </li>
+                
+                
+                                <!-- <li>
+                                    <a href="{% url 'profileView' %}">Profile</a>
+                                </li> -->
+                                <li>
+                                    <a href="/update/profile/">Update Profile</a>
+                                </li>
+                                <li>
+                                    <a href="/post">Post Image</a>
+                                </li>
+                                <li>
+                                    <a href="/logout">Logout</a>
+                                </li>
+                            </ul>
+                        </li>
+                
+                        {% else %}
+
+                            <a class='btn btn-default' style="margin-top: 5%" href="/accounts/login">Login</a>
+
+                            <a class='btn btn-default' style="margin-top: 5%" href="{% url 'registration_register'  %}">Sign Up</a>
+
+                
+                    </ul>
+                    {% endif %}
+                </div>
+            <ul class="nav nav-tabs navbar-right" >
+                <li><a href="/timeline/"><img class="img-responsive" src="../static/images/explore.png" style="width: 25px; height: 25px; margin: 5px; margin-bottom: 8px; margin-top: 2px;"></a></li>
+                <li><a href="/profile/"><img class="img-responsive" src="../static/images/person.png" style="width: 25px; height: 25px; margin: 5px; margin-top: 2px;"></a></li>
+                <li><a href="/index/"><img class="img-responsive" src="../static/images/heart.png" style="width: 30px; height: 30px; margin: 5px; margin-top: 2px;"></a></li>
+            </ul>
+            
+            <!-- search form  -->
+            <div style="text-align: center; margin-top: -0.10%; margin-left: 15%">
+            <form class="navbar-form" role="search" action="{% url 'search_results' %}">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Search" name="grammer" style="border-radius: 5px; text-align: center">
+                </div>
+            </form>
+            </div>
+            <!--search bar end-->
+
+
+
+        </div>
+        
+    </nav>
+<div class="empty">
+    <style>
+        .empty{
+            margin-top: 8%;
+        }
+    </style>
+</div>
+
+
+
+
+</body>
+
+</html>
