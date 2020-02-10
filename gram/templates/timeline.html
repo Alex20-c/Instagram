@@ -1,0 +1,34 @@
+{% extends 'base.html' %} {% block content %}
+<head>
+<style>
+    h1{
+        text-align: center;
+        padding: 20%;
+        background-color: blue;
+        
+    }
+
+    .container{
+        border-radius: 5px;
+    }
+</style>
+</head>
+<section class="no-touch">
+
+    {% for image in images %}
+    <div class="wrap col-md-3">
+        <a href="{% url 'singlePhoto' image.id %} ">
+            <div class="box">
+                <div class="boxInner">
+                    <img src="{{ image.image.url }}" class="img-responsive">
+                    <div class="titleBox" style="font-family: 'Cabin Sketch', cursive">{{image.name|upper}}</div>
+                </div>
+            </div>
+
+    </div>
+    {% endfor %}
+<div class="container">
+    <h1>Nothing In Your Timeline Yet</h1>
+</div>
+</section>
+{% endblock %}
