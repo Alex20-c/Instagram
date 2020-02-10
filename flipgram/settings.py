@@ -77,7 +77,7 @@ WSGI_APPLICATION = 'flipgram.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2,
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'instagram',
         'USER': 'alex',
         'PASSWORD': 'lexy',
