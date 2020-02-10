@@ -1,0 +1,28 @@
+{% load bootstrap3 %} {% load static%}
+<!DOCTYPE html>
+<html>
+
+    <head>
+    <link rel="shortcut icon" type="image/png" href="../static/images/iconn.png" />
+    <meta charset="utf-8"> {% if title %}
+    <title> {{title}}</title>
+    {% else %}
+    <title> Onepiece</title>
+    {% endif %} {% block styles %} {% bootstrap_css %}
+    {% endblock %}
+</head>
+<!--style-->
+<style>
+    body{
+        background-color: whitesmoke;
+    }
+
+</style>
+<!--end of style-->
+    
+{% include "navbar.html" %} {% block content %} {% endblock %} {% block scripts %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> {% bootstrap_javascript %} {% endblock %}
+
+</body>
+
+</html>
