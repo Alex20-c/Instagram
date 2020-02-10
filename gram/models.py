@@ -128,4 +128,17 @@ class Like(models.Model):
         '''
         post = Like.objects.filter(post=post_id)
 
+class Follow(models.Model):
+    '''
+    Class that store a User and Profile follow status
+    '''
+    user = models.ForeignKey(User)
+    profile = models.ForeignKey(Profile)
 
+    def __str__(self):
+        return self.user.username
+
+    @classmethod
+    def get_following(cls, user_id):
+        following = Follow.objects.filter(user=user_id).all()
+        return following
