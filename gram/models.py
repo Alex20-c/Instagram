@@ -19,7 +19,7 @@ class Profile(models.Model):
         '''
         return self.user.username
         
-        @classmethod
+    @classmethod
     def get_profiles(cls):
         '''
         Fucntion that gets all the profiles in the app
