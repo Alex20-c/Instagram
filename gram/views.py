@@ -269,3 +269,84 @@ def follow(request, id):
         pass
 
     return redirect(index)
+    
+    @login_required(login_url='/accounts/login')
+def unfollow(request, id):
+    '''
+    View function unfollow other users
+    '''
+    current_user = request.user
+
+    follow_profile = Profile.objects.get(id=id)
+
+    following = Follow.objects.filter(
+        user=current_user, profile=follow_profile)
+    # following = Follow(user=current_user, profile=follow_profile)
+    for item in following:
+        item.delete()
+
+    return redirect(index)
+
+
+def search_results(request):
+
+    if 'grammer' in request.GET and request.GET["grammer"]:
+        search_term = request.GET.get("grammer")
+        searched_users = User.objects.filter(username__icontains=search_term)
+        message = f"{search_term}"
+
+        for user in searched_users:
+            found = Profile.objects.get(user=user.id)
+
+        return render(request, 'searched.html', {"message": message, "users": searched_users, "found": found})
+
+    else:
+        message = "You haven't searched for any term"
+        return render(request, 'searched.html', {"message": message})
+def signup(request):
+    
+    if request.method == 'POST':
+
+        form = SignupForm(request.POST)
+
+        if form.is_valid():
+
+            user = form.save(commit=False)
+
+            user.is_active = False
+
+            user.save()
+
+            current_site = get_current_site(request)
+
+            mail_subject = 'Activate Your Instagram Account'
+
+            message = render_to_string('registration/email.html', {
+
+                'user': user,
+
+                'domain': current_site.domain,
+
+                'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+
+                'token': account_activation_token.make_token(user),
+
+            })
+
+            to_email = form.cleaned_data.get('email')
+
+            email = EmailMessage(
+
+                        mail_subject, message, to=[to_email]
+
+            )
+
+            email.send()
+
+            return HttpResponse('Please confirm your email address to complete the registration')
+
+    else:
+
+        form = SignupForm()
+
+    return render(request, 'registration/signup.html', {'form': form})
