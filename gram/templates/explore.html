@@ -1,0 +1,170 @@
+{% load bootstrap3 %} {% load static%}
+<!DOCTYPE html>
+<html>
+
+    <head>
+    <link rel="shortcut icon" type="image/png" href="../static/images/iconn.png" />
+    <meta charset="utf-8"> {% if title %}
+    <title> {{title}}</title>
+    {% else %}
+    <title> Onepiece</title>
+    {% endif %} {% block styles %} {% bootstrap_css %}
+    {% endblock %}
+</head>
+<!--style-->
+<style>
+    body{
+        background-color: whitesmoke;
+    }
+
+</style>
+<!--end of style-->
+    
+{% include "navbar.html" %} {% block content %} {% endblock %} {% block scripts %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> {% bootstrap_javascript %} {% endblock %}
+<body>
+{% for image in images %}
+
+
+
+
+
+<div class="col-sm-6 col-md-offset-2" style="margin-top:10px">
+  <div class="well" style="background-color:white;">
+    <div class="like" style="font-size:30px">
+    </div>
+
+    <!-- info of the user that posted -->
+    <header style="margin-top:20px; border-bottom: 1px solid #ddd">
+
+      <img src="{{user_info.profile_photo.url}}" alt="" style="height:40px;width:40px; border-radius:50%">
+      <a href="{% url 'otherProfile' image.user.id %}">
+          <p style="display:inline; margin-left:10px; color:rgb(13, 100, 171); font-weight:bolder; font-size:12px; margin-bottom:10px">{{image.user}}</p><br><br>
+      </a>
+      <!-- end user info -->
+
+      <!-- image posted -->
+      <div class="col-12" style="margin-left:0px">
+          <img src="{{image.image.url}}" style="height:70%; width:100%; margin-left:0px"class="img-responsive" ><br>
+      </div>
+      <p style="display:inline; margin-left:10px; margin-top:10px; font-size:16px; margin-bottom:10px">{{image.image_caption}}</p>
+      <p style="font-size:12px; color:grey; margin-top:10px; margin-left:65% "> </p>
+
+
+    </header>
+    <!-- end image posted -->
+
+    {{block.super}}
+
+    <p style="margin-top:10px;font-weight:bolder; font-size:16px">
+
+
+      {% if validate_vote == 0 %}
+
+      {% else %}
+          <a href="{%url 'like' image.id%}">
+              <i class="fa fa-heart" aria-hidden="true" style="color:red;"></i>
+          </a>
+       {% endif %}
+
+      {{likes }} likes </p>
+    <h3 style="text-decoration:none; color:rgb(13, 100, 171); font-size:15px"><a href="{% url 'Comment' image.id %}"><i class="fa fa-comment-o" aria-hidden="true"></i> Comment</a></h3>
+    {% for comment in comments %}
+    <p style="margin-bottom:-1px"><span style=" margin-right:10px; font-weight:bolder; font-size:15px">{{comment.user}}</span> {{comment.comment}}</p>
+    {% endfor %}
+    <hr>
+  </div>
+</div>
+{% endfor %}
+
+<div class="col-md-8">
+
+          {% for post in posts %}
+
+          <div class="media-container">
+
+            <div class="card">
+
+              <div style="background-color: white;" class="card-header">
+
+                <span><img class="" src="{{ post.author.profile.image.url }}" alt="img" width="50px">
+
+                  {{post.author}}</span>
+
+              </div>
+
+              <div class="card-body">
+
+                <div class="card-image">
+
+                  <a href="{% url 'commenting' post.id %}"><img class="w-100" src="{{post.image.url}}"
+
+                      alt="{{post.author}}"></a>
+
+                </div>
+
+                <div class="post-info">
+
+                  <div class="post-caption">
+
+                    <p class="text-black mt-2">{{post.caption}}</p>
+
+                  </div>
+
+                  <div class="post-date">
+
+                    <p>{{post.created_date|timesince}} ago</p>
+
+                    <a class="text-info ml-3" href="{% url 'commenting' post.id%}"><i class="fa fa-comment"></i>
+
+                      {{post.comments.all.count}} {{post.comments.all.pluralize}}</a>
+
+                    <a class="text-info ml-3" href="#"><i class="fa fa-share"></i></a>
+
+                    <div class="count">
+
+                      {% if post.likes.id == user.id %}
+
+                      <a class="text-danger ml-3" href="{% url 'likes' post.id%}"><i
+
+                          class="fa fa-heart "></i>{{post.likes.count}}</a>
+
+                      {% else %}
+
+                      <a class="text-info ml-2" href="{% url 'likes' post.id%}"><i class="fa fa-heart "></i>
+
+                        {{post.likes.count}}
+
+                      </a>
+
+                      {% endif %}
+
+                    </div>
+
+                  </div>
+
+                  <div class="comment mt-2">
+
+                    <form action="{% url 'comment' post.id %}" method="post">
+
+                      {% csrf_token %}
+
+                      {{comment_form}}
+
+                      <input type="submit" class="btn btn-info" value="Comment">
+
+                    </form>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+{% endfor %}
+</body>
+
+</html>
