@@ -58,3 +58,32 @@ def index(request):
                 images.append(image)
 
     return render(request, 'index.html', {"images": images, "title": title, "following": following, "user": current_user, "grammers": grammers})
+
+@login_required(login_url='/accounts/login')
+def single_image(request, photo_id):
+    '''
+    View funtion to display a particular image with its details
+    '''
+    image = Image.objects.get(id=photo_id)
+    # fetch the profile of the user who posted
+    user_info = Profile.objects.get(user=image.user.id)
+    comments = Comment.objects.filter(post=image.id)
+    validate_vote = Like.objects.filter(
+        user=request.user, post=photo_id).count()
+    upvotes = Like.get_post_likes(image.id)
+    likes = len(upvotes)
+    return render(request, 'single-image.html', {'image': image, "user_info": user_info, "comments": comments, "likes": likes, "validate_vote": validate_vote})
+
+
+@login_required(login_url='/accounts/login')
+def manage_image(request, photo_id):
+    '''
+    View funtion to display a particular image with its details
+    '''
+    image = Image.objects.get(id=photo_id)
+    user_info = Profile.objects.get(user=image.user.id)
+    comments = Comment.objects.filter(post=image.id)
+    validate_vote = Like.objects.filter(user=request.user, post=photo_id).count()
+    upvotes = Like.get_post_likes(image.id)
+    likes = len(upvotes)
+    return render(request, 'manage-image.html', {'image': image, "user_info": user_info, "comments": comments, "likes": likes, "validate_vote": validate_vote})
