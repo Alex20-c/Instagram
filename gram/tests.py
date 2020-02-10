@@ -62,3 +62,103 @@ class ProfileTestClass(TestCase):
 
         self.assertTrue(len(profile) == 0)
 
+class ImageTestClass(TestCase):
+    
+    def setUp(self):
+
+        self.new_user = User(username = "alex", email = "kipropalex59@gmail.com", password = "fergason")
+
+        self.new_user.save()
+
+        self.new_profile = Profile(photo = '/posts', bio = "self love", user = self.new_user)
+
+        self.new_profile.save()
+
+        self.new_image = Image(picture = '/posts', caption = 'just a caption', posted = '16/11/2019', profile = self.new_profile)
+
+        self.new_image.save_image()
+
+    def test_instance(self):
+
+        self.assertTrue(isinstance(self.new_image, Image))
+
+    def tearDown(self):
+
+        Images.objects.all().delete()
+
+    def test_save_image(self):
+
+        self.new_image.save_image()
+
+        images = Image.objects.all()
+
+        self.assertTrue(len(images) > 0)
+
+    def test_update_caption(self):
+
+        self.new_image.save_image()
+
+        kwargs = {'picture':'/posts', 'caption':'just a caption'}
+
+        Image.update_caption(self.image.id, **kwargs)
+
+        self.assertEqual("just a caption", self.image.caption)
+
+    def test_delete_image(self):
+
+        self.new_image.save_image()
+
+        self.new_image.delete_image()
+
+        images = Images.objects.all()
+
+        self.assertTrue(len(images) == 0)
+
+    def test_get_image_id(self):
+
+        image_id = id
+
+        self.new_image.objects.get(pk=id)
+
+        self.assertTrue(pk=id)
+
+class CommentsTestClass(TestCase):
+
+    def setUp(self):
+
+        self.new_user = User(username = 'alex', email = 'kipropalex59@gmail.com', password = 'fergason')
+
+        self.new_user.save()
+
+        self.new_profile = Profile(photo = '/posts', bio = 'just a bio', user = self.new_user)
+
+        self.new_profile.save()
+
+        self.new_comment = Comments(comment='just a comment', image = self.image, user = self.new_profile, posted = auto_now())
+
+    def test_instance(self):
+
+        self.assertTrue(isinstance(self.new_comment, Comments))
+
+    def test_save_method(self):
+
+        self.new_comment.save_comment()
+
+        comments = Comments.objects.all()
+
+        self.assertTrue(len(comments) > 0)
+
+    def test_delete_comments(self):
+
+        self.comments.save_comment()
+
+        self.comments.delete_comment()
+
+        comments = Comments.objects.all()
+
+        self.assertTrue(len(comments) == 0)
+
+    def tearDown(self):
+
+        Comments.objects.all().delete()
+
