@@ -270,7 +270,7 @@ def follow(request, id):
 
     return redirect(index)
     
-    @login_required(login_url='/accounts/login')
+@login_required(login_url='/accounts/login')
 def unfollow(request, id):
     '''
     View function unfollow other users
